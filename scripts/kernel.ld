@@ -1,13 +1,13 @@
 /*
-kernel.ld —— 针对kernel格式所写的链接脚本
-*/
+ *      kernel.ld -- 针对 kernel 格式所写的链接脚本
+ */
 
 ENTRY(start)
 SECTIONS
 {
-    //段起始位置
+    /* 段起始位置 */
 
-    . = 0x100000
+    . = 0x100000;
     .text :
     {
         *(.text)
@@ -32,7 +32,7 @@ SECTIONS
         *(.stab)
         . = ALIGN(4096);
     }
-
+    
     .stabstr :
     {
         *(.stabstr)

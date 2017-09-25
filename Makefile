@@ -14,8 +14,7 @@ LD_FLAGS = -T scripts/kernel.ld -m elf_i386 -nostdlib
 # -T scripts/kernel.ld 使用自己编写的链接器脚本   -m elf_i386 生成i386平台下的ELF格式的可执行文件
 ASM_FLAGS = -f elf -g -F stabs
 
-all:$(S_OBJECTS) $(C_OBJECTS)
-	link update_image
+all:$(S_OBJECTS) $(C_OBJECTS) link update_image
 
 .c.o:
 	@echo 编译代码文件 $< ...
@@ -27,15 +26,15 @@ all:$(S_OBJECTS) $(C_OBJECTS)
 
 link:
 	@echo 链接内核文件...
-	$(LD) $(LD_FLAGS) $(S_OBJECTS) $(C_OBJECTS) -o hx_kernel
+	$(LD) $(LD_FLAGS) $(S_OBJECTS) $(C_OBJECTS) -o tl_kernel
 
 
 .PHONY:update_image
 update_image:
-	sudo mount SimpleOSkernel.img /mnt/kernel
-	sudo cp hx_kernel /mnt/kernel/hx_kernel
+	sudo mount floppy.img /mnt/TLOS
+	sudo cp tl_kernel /mnt/TLOS/boot/kernel
 	sleep 1
-	sudo umount /mnt/kernel
+	sudo umount /mnt/TLOS
 
 .PHONY:umount_image
 mount_image:
@@ -43,7 +42,7 @@ mount_image:
 
 .PHONY:qemu
 qemu:
-	qemu -fda SimpleOSkernel.img -boot a
+	qemu -fda floppy.img -boot a
 
 .PHONY:bochs
 bochs:
@@ -51,10 +50,10 @@ bochs:
 
 .PHONY:debug
 debug:
-	qemu -S -s -fda SimpleOSkernel.img -boot a &
+	qemu -S -s -fda floppy.img -boot a &
 	sleep 1
 	cgdb -x tools/gdbinit
 
 .PHONY:clean
 clean:
-	$(RM) $(S_OBJECTS) $(C_OBJECTS) hx_kernel
+	$(RM) $(S_OBJECTS) $(C_OBJECTS) tl_kernel

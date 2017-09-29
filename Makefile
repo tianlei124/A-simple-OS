@@ -26,15 +26,15 @@ all:$(S_OBJECTS) $(C_OBJECTS) link update_image
 
 link:
 	@echo 链接内核文件...
-	$(LD) $(LD_FLAGS) $(S_OBJECTS) $(C_OBJECTS) -o tl_kernel
+	$(LD) $(LD_FLAGS) $(S_OBJECTS) $(C_OBJECTS) -o cdf_kernel
 
 
 .PHONY:update_image
 update_image:
-	sudo mount floppy.img /mnt/TLOS
-	sudo cp tl_kernel /mnt/TLOS/boot/kernel
+	sudo mount floppy.img /mnt/ChouDouFu
+	sudo cp cdf_kernel /mnt/ChouDouFu/boot/kernel
 	sleep 1
-	sudo umount /mnt/TLOS
+	sudo umount /mnt/ChouDouFu
 
 .PHONY:umount_image
 mount_image:
@@ -56,4 +56,4 @@ debug:
 
 .PHONY:clean
 clean:
-	$(RM) $(S_OBJECTS) $(C_OBJECTS) tl_kernel
+	$(RM) $(S_OBJECTS) $(C_OBJECTS) cdf_kernel

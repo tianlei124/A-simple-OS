@@ -18,7 +18,7 @@ typedef enum real_color {
     rc_light_cyan = 11,
     rc_light_red = 12,
     rc_light_magenta = 13,
-    rc_light_brown  = 14,   // yellow
+    rc_light_brown  = 14,
     rc_white = 15
 } real_color_t;
 
@@ -35,9 +35,6 @@ void console_write(char *cstr);
 void console_write_color(char *cstr, real_color_t back, real_color_t fore);
 
 // 屏幕输出一个十六进制的整型数
-void console_write_hex(uint32_t n, real_color_t back, real_color_t fore);
-
-// 屏幕输出一个十进制的整型数
-void console_write_dec(uint32_t n, real_color_t back, real_color_t fore);
+void console_write_digit(int32_t xx, uint8_t base, int sign, real_color_t back, real_color_t fore);
 
 #endif  // INCLUDE_CONSOLE_H_

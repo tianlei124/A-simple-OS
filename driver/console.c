@@ -60,10 +60,10 @@ void console_clear(void)
 
 void console_putc_color(char c, real_color_t back, real_color_t fore)
 {
-//    uint8_t back_color = (uint8_t) back;
-//    uint8_t fore_color = (uint8_t) fore;
+    uint8_t back_color = (uint8_t) back;
+    uint8_t fore_color = (uint8_t) fore;
 
-    uint8_t attribute_byte = (0 << 4) | (15 & 0x0f);
+    uint8_t attribute_byte = (back_color << 4) | (fore_color & 0x0f);
     uint16_t attribute = attribute_byte << 8;
 
     //0x08是退格健的ASCII码
@@ -102,7 +102,7 @@ void console_putc_color(char c, real_color_t back, real_color_t fore)
 void console_write(char *cstr)
 {
     while(*cstr)
-        console_putc_color(*cstr,rc_black,rc_white);
+        console_putc_color(*cstr++,rc_black,rc_white);
 }
 
 void console_write_color(char *cstr, real_color_t back, real_color_t fore)
@@ -111,14 +111,27 @@ void console_write_color(char *cstr, real_color_t back, real_color_t fore)
         console_putc_color(*cstr++,back,fore);
 }
 
-void console_write_hex(uint32_t n, real_color_t back, real_color_t fore)
+void console_write_digit(int32_t xx, uint8_t base, int sign, real_color_t back, real_color_t fore)
 {
+    static char digits[] = "0123456789abcdef";
+    char buf[16];
+    int i;
+    uint32_t x;
 
+    if(sign && (sign = (xx<0)))
+        x = -xx;
+    else
+        x = xx;
+    
+    i = 0;
 
-}
+    do{
+        buf[i++] = digits[x%base];
+    }while((x/base)!=0);
 
-void console_write_dec(uint32_t n, real_color_t back, real_color_t fore)
-{
-
-
+    if(sign)
+        buf[i++]= '-';
+    
+    while(--i >= 0)
+        console_putc_color(buf[i],back,fore);
 }

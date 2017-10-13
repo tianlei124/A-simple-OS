@@ -1,23 +1,24 @@
 #include "string.h"
+#include "common.h"
 
 
 void* memmove(void* dest,const void* src,uint32_t len)
 {
-    const void* s;
+    const char* s;
     char* d;
 
     s = src;
     d = dest;
-    if(s < d && s+n > d)
+    if(s < d && s+len > d)
     {
-        s += n;
-        d += n;
+        s += len;
+        d += len;
 
-        while(n-- > 0)
+        while(len-- > 0)
             *(--d) = *(--s);
     }
     else
-        while(n-- > 0)
+        while(len-- > 0)
             *(d++) = *(s++);
     
     return dest;
@@ -43,12 +44,14 @@ void* memset(void *dest,uint8_t val,uint32_t len)
     return dest;
 }
 
-int strcmp(const char* str1,const char* str2,uint8_t len)
+int strcmp(const char* str1,const char* str2)
 {
-    while(len>0 && *str1 && *str1==*str2)
-        n--,str1++,str2++;
-    if(n == 0)
-        return 1;
+    int len = strlen(str1);
+
+    while(len > 0 && *str1 && *str1==*str2)
+        len--,str1++,str2++;
+    if(len == 0)
+        return 0;
     else
         return (uint8_t)(*str1) - (uint8_t)(*str2);
 }
@@ -67,7 +70,7 @@ char* strcpy(char* dest,const char* src,uint8_t len)
     if(len <= 0)
         return os;
     
-    while(n-- > 0 && (*dest++ = *src++) != 0);
+    while(len-- > 0 && (*dest++ = *src++) != 0);
     *dest = '\0';
     
     return os;

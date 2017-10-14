@@ -6,9 +6,11 @@
 
 int kern_entry()
 {
+    int i = -100;
+
     init_debug();
     console_clear();
-    printk_color(rc_black,rc_green,"This OS kernel's name is ChouDouFu\n");
+    printk("This OS kernel's name is ChouDouFu\ni = %d\n",i);
     panic("test");
 
     return 0;

@@ -29,7 +29,7 @@ typedef struct elf_symbol_t{
     uint32_t size;
     uint8_t info;
     uint8_t other;
-    uint8_t shndx;
+    uint16_t shndx;
 }__attribute__((packed)) elf_symbol_t;
 
 //information

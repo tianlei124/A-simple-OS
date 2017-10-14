@@ -6,16 +6,37 @@
 typedef struct multiboot_t{
     uint32_t flags;             //Multiboot 的版本信息
     /*
-    *从BIOS获知的可用内存
+    *从 BIOS 获知的可用内存
     *
-    *mem_lower 和 mem_upper 分别指出了低端和高端内存的大小，单位时K
+    *如果设置了 flags 中的第0位，则 mem_* 有效
+    * mem_lower 和 mem_upper 分别指出了低端和高端内存的大小,单位是K
     *低端内存的首地址是0，高端内存的首地址是1M
     *低端内存的最大可能值为640K
     *高端内存的最大可能值是最大值减去1M，但是并不保证是这个值
     */
+    uint32_t mem_lower;
+    uint32_t mem_upper;
 
     /*
-    *ELF格式可执行文件的section头表。包括每一項的大小、一共有几项以及作为名字索引的字符串
+    *如果设置了 flags 中的第1位，则 boot_device有效。
+    * boot_device 域由以下4个单字节的子域组成：
+    *   +-------+-------+-------+-------+
+    *   | drive | part1 | part2 | part3 |
+    *   +-------+-------+-------+-------+
+    *第一个字节包含驱动器号，它的格式与 BIOS 的 INTO0X13 低级磁盘接口相同： 例如，0x00
+    * 代表第一个软盘驱动器， 0x80 代表第一个硬盘驱动器
+    * 剩下的三个字节指出了引导分区， part1 指出顶级分区号， part2 指出一个顶级分区中的一个子分区... 
+    */
+    uint32_t boot_device;           //指出引导程序从哪个BIOS磁盘设备载入的OS映像
+
+    //uint32_t cmdline;               //内核命令行
+    //uint32_t mods_count;            //boot模块列表
+    //uint32_t mods_addr;
+
+    /*
+    * 如果设置了 flags 的第5位，则下面从 Mulitiboot 信息结构的第28位的域是有效的
+    * addr 指出 ELF 格式内核映像section头表的位置， size指出 section头表中每一项的大小
+    * num 指出一共有几项， shndx 指出作为名字索引的字符串表。
     */
 
     uint32_t num;
@@ -25,8 +46,8 @@ typedef struct multiboot_t{
 
     /*
     *以下两项指出保存由BIOS提供的内存分布的缓存区的地址和长度
-    *mmap_addr 是缓冲区的地址，mmap_length 是缓冲区的地址
-    *缓冲区由一个或者多个下面的mmap_entry_t组成
+    *mmap_addr 是缓冲区的地址，mmap_length 是缓冲区的总大小
+    *缓冲区由一个或者多个下面的 mmap_entry_t 组成
     */
 
     uint32_t mmap_addr;
@@ -48,10 +69,10 @@ typedef struct multiboot_t{
 * size 是相关结构的大小，单位是字节，它可能大于最小值 20
 * base_addr_low 是启动地址的低32位，base_addr_high 是最高32位，启动地址总共有64位
 * length_low 是内存区域大小的低32位，length_high 是内存区域大小的高 32位，总共是64位
-* type 是相应地址区间的类型，1 代表可用，所有其他值代表保留区域RAM
+* type 是相应地址区间的类型，1 代表可用RAM，所有其他值代表保留区域
 */
 
-typedef struct mmap_entry_t{
+typedef struct mmap_entry_t {
     uint32_t size;
     uint32_t base_addr_low;
     uint32_t base_addr_high;

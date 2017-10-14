@@ -111,14 +111,14 @@ void console_write_color(char *cstr, real_color_t back, real_color_t fore)
         console_putc_color(*cstr++,back,fore);
 }
 
-void console_write_digit(int32_t xx, uint8_t base, int sign, real_color_t back, real_color_t fore)
+void console_write_digit(int32_t xx, uint8_t base, real_color_t back, real_color_t fore)
 {
     static char digits[] = "0123456789abcdef";
     char buf[16];
-    int i;
+    int i,sign;
     uint32_t x;
 
-    if(sign && (sign = (xx<0)))
+    if(sign = (xx < 0))
         x = -xx;
     else
         x = xx;

@@ -35,6 +35,6 @@ void console_write(char *cstr);
 void console_write_color(char *cstr, real_color_t back, real_color_t fore);
 
 // 屏幕输出一个十六进制的整型数
-void console_write_digit(int32_t xx, uint8_t base, int sign, real_color_t back, real_color_t fore);
+void console_write_digit(int32_t xx, uint8_t base,real_color_t back, real_color_t fore);
 
 #endif  // INCLUDE_CONSOLE_H_

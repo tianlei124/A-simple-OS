@@ -1,9 +1,11 @@
-#ifndef INCLUDE_MULTIBOOT_h
-#define INCLUDE_MULTIBOOT_h
+#ifndef INCLUDE_MULTIBOOT_H
+#define INCLUDE_MULTIBOOT_H
 
 #include "types.h"
 
 typedef struct multiboot_t{
+    //变量声明顺序必须严格遵循 Multiboot 规范！！！！！！！ 就是以下顺序，不能变！！！ 不然会传错参数
+
     uint32_t flags;             //Multiboot 的版本信息
     /*
     *从 BIOS 获知的可用内存
@@ -29,9 +31,9 @@ typedef struct multiboot_t{
     */
     uint32_t boot_device;           //指出引导程序从哪个BIOS磁盘设备载入的OS映像
 
-    //uint32_t cmdline;               //内核命令行
-    //uint32_t mods_count;            //boot模块列表
-    //uint32_t mods_addr;
+    uint32_t cmdline;               //内核命令行
+    uint32_t mods_count;            //boot模块列表
+    uint32_t mods_addr;
 
     /*
     * 如果设置了 flags 的第5位，则下面从 Mulitiboot 信息结构的第28位的域是有效的
@@ -50,8 +52,8 @@ typedef struct multiboot_t{
     *缓冲区由一个或者多个下面的 mmap_entry_t 组成
     */
 
-    uint32_t mmap_addr;
     uint32_t mmap_length;
+    uint32_t mmap_addr;
 
     uint32_t drives_length;         //第一个驱动其结构的长度
     uint32_t drives_addr;           //第一个驱动器结构的物理地址
@@ -60,6 +62,7 @@ typedef struct multiboot_t{
     uint32_t apm_table;             //APM表
     uint32_t vbe_control_info;
     uint32_t vbe_mode_info;
+    uint32_t vbe_mode;
     uint32_t vbe_interface_seg;
     uint32_t vbe_interface_off;
     uint32_t vbe_interface_len;
@@ -84,4 +87,4 @@ typedef struct mmap_entry_t {
 //声明一个全局的multiboot结构体指针
 extern multiboot_t* glb_mboot_ptr;
 
-#endif
+#endif                          //INCLUDE_MULTIBOOT_H

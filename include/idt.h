@@ -93,5 +93,45 @@ void isr31();
 // 但是一般而言，32是 timer 中断，33是键盘中断
 void isr255();
 
+// IRQ 处理函数
+void irq_handler(pt_regs* regs);
+
+//声明 IRQ
+#define IRQ0    32                  // timer
+#define IRQ1    33                  // keyboard
+#define IRQ2    34                  // 与 IRQ9 相接， MPU-401 MD 使用
+#define IRQ3    35                  // Serial device
+#define IRQ4    36                  // Serial device
+#define IRQ5    37                  // 建议声卡使用
+#define IRQ6    38                  // 软驱传输控制
+#define IRQ7    39                  // 打印机传输控制
+#define IRQ8    40                  // RealClock
+#define IRQ9    41                  // 与 IRQ2 相接。可设定给其它硬件
+#define IRQ10   42                  // 建议网卡使用
+#define IRQ11   43                  // 建议 AGP 显卡使用
+#define IRQ12   44                  // 接 PS/2 鼠标，也可以设置给其它硬件
+#define IRQ13   45                  // 协处理器使用
+#define IRQ14   46                  // IDE0 传输控制使用
+#define IRQ15   47                  // IDE1 传输控制使用
+
+//声明 IRQ 函数
+// IRQ 中断请求
+void irq0();
+void irq1();
+void irq2();
+void irq3();
+void irq4();
+void irq5();
+void irq6();
+void irq7();
+void irq8();
+void irq9();
+void irq10();
+void irq11();
+void irq12();
+void irq13();
+void irq14();
+void irq15();
+
 
 #endif                              //INCLUDE_IDT_H

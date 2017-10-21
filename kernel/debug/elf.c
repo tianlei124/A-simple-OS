@@ -1,6 +1,7 @@
 #include "common.h"
 #include "elf.h"
 #include "string.h"
+#include "vmm.h"
 
 //从Multiboot结构体指针指向的内容中获取ELF信息
 elf_t elf_from_multiboot(multiboot_t *mb)
@@ -16,12 +17,12 @@ elf_t elf_from_multiboot(multiboot_t *mb)
         //在GRUB提供的multiboot信息中寻找ELF格式内核的字符串表和符号表
         if(strcmp(name,".strtab") == 0)
         {
-            elf.strtab = (const char*) sh[i].addr;
+            elf.strtab = (const char*) sh[i].addr + PAGE_OFFSET;
             elf.strtabsz = sh[i].size;
         }
         if(strcmp(name,".symtab") == 0)
         {
-            elf.symtab = (const char*) sh[i].addr;
+            elf.symtab = (const char*) sh[i].addr + PAGE_OFFSET;
             elf.symtabsz = (const char*) sh[i].size;
         }
     }

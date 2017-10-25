@@ -14,7 +14,7 @@
  * 如果P=0，那么除表示表项无效外，其余位可供程序自由使用。
  * 例如，操作系统可以使用这些位来保存已存储在磁盘上的页面的序号。
  */
-#define PAGE_PRESENT 	0x001
+#define PAGE_PRESENT 	0x1
 
 /** 
  * R/W--位1是读/写（Read/Write）标志。如果等于1，表示页面可以被读、写或执行。
@@ -22,7 +22,7 @@
  * 当处理器运行在超级用户特权级（级别0、1或2）时，则R/W位不起作用。
  * 页目录项中的R/W位对其所映射的所有页面起作用。
  */
-#define PAGE_WRITE 	0x002
+#define PAGE_WRITE 	0x2
 
 /**
  * U/S--位2是用户/超级用户（User/Supervisor）标志。
@@ -30,9 +30,7 @@
  * 如果为0，那么页面只能被运行在超级用户特权级（0、1或2）上的程序访问。
  * 页目录项中的U/S位对其所映射的所有页面起作用。
  */
-#define PAGE_USER 	0x004
-
-#define PAGE_PS     0x080
+#define PAGE_USER 	0x4
 
 // 虚拟分页大小
 #define PAGE_SIZE 	4096
@@ -55,10 +53,10 @@ typedef uint32_t pgd_t;
 // 页表数据类型
 typedef uint32_t pte_t;
 
-// 页目录中的页表数
+// 页表成员数
 #define PGD_SIZE (PAGE_SIZE/sizeof(pte_t))
 
-// 页表中的页数
+// 页表成员数
 #define PTE_SIZE (PAGE_SIZE/sizeof(uint32_t))
 
 // 映射 512MB 内存所需要的页表数

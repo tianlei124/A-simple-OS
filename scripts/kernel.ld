@@ -15,6 +15,12 @@ SECTIONS
 		*(.init.text)
 		. = ALIGN(4096);
 	}
+	.pic.text :
+	{
+		*(.text.__x86.get_pc_thunk.ax)
+		*(.text.__x86.get_pc_thunk.bx)
+		. = ALIGN(4096);
+	}
 	.init.data : 
 	{
 		*(.init.data)

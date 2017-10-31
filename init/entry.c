@@ -6,6 +6,9 @@
 #include "timer.h"
 #include "pmm.h"
 #include "vmm.h"
+#include "heap.h"
+
+
 
 // 内核初始化函数
 void kern_init();
@@ -50,7 +53,7 @@ __attribute__((section(".init.text"))) void kern_entry()
 	asm volatile ("mov %0, %%cr0" : : "r" (cr0));
 	
 	// 切换内核栈
-	uint32_t kern_stack_top = ((uint32_t)kern_stack + STACK_SIZE) & 0xFFFFFFF0;
+	uint32_t kern_stack_top = (uint32_t)kern_stack + STACK_SIZE;
 	asm volatile ("mov %0, %%esp\n\t"
 			"xor %%ebp, %%ebp" : : "r" (kern_stack_top));
 
@@ -68,9 +71,9 @@ void kern_init()
 	init_idt();
 
 	console_clear();
-	printk_color(rc_black, rc_green, "Hello, OS kernel!\n\n");
+	printk_color(rc_black, rc_green, "This OS kernel's name is ChouDouFu!\n\n");
 
-	init_timer(200);
+	//init_timer(200);
 
 	// 开启中断
 	// asm volatile ("sti");
@@ -79,23 +82,16 @@ void kern_init()
 	printk("kernel in memory end:   0x%08X\n", kern_end);
 	printk("kernel in memory used:   %d KB\n\n", (kern_end - kern_start) / 1024);
 	
-	show_memory_map();
+	//show_memory_map();
 	init_pmm();
-
+	init_vmm();
+//	init_heap();
+	
 	printk_color(rc_black, rc_red, "\nThe Count of Physical Memory Page is: %u\n\n", phy_page_count);
 
-	uint32_t allc_addr = NULL;
-	printk_color(rc_black, rc_light_brown, "Test Physical Memory Alloc :\n");
-	allc_addr = pmm_alloc_page();
-	printk_color(rc_black, rc_light_brown, "Alloc Physical Addr: 0x%08X\n", allc_addr);
-	allc_addr = pmm_alloc_page();
-	printk_color(rc_black, rc_light_brown, "Alloc Physical Addr: 0x%08X\n", allc_addr);
-	allc_addr = pmm_alloc_page();
-	printk_color(rc_black, rc_light_brown, "Alloc Physical Addr: 0x%08X\n", allc_addr);
-	allc_addr = pmm_alloc_page();
-	printk_color(rc_black, rc_light_brown, "Alloc Physical Addr: 0x%08X\n", allc_addr);
+	
+//	test_heap();
 
-	while (1) {
-		asm volatile ("hlt");
-	}
+	while(1)
+		asm volatile("hlt");
 }

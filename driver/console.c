@@ -1,4 +1,5 @@
 #include "console.h"
+#include "common.h"
 #include "types.h"
 #include "vmm.h"
 

@@ -31,7 +31,6 @@ void* memcpy(void* dest,const void* src,uint32_t len)
 
 void* memset(void *dest,uint8_t val,uint32_t len)
 {
-    uint32_t new_val = 0;
     if((int)dest % 4 == 0 && len % 4 == 0)
     {
         val &= 0xff;

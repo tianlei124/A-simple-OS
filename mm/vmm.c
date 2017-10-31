@@ -22,14 +22,14 @@ void init_vmm()
 		pgd_kern[i] = ((uint32_t)pte_kern[j] - PAGE_OFFSET) | PAGE_PRESENT | PAGE_WRITE;
 	}
 
-	uint32_t *pte = (uint32_t *)pte_kern;
+	uint32_t* pte = (uint32_t*)pte_kern;
 	// 不映射第 0 页，便于跟踪 NULL 指针
 	for (i = 1; i < PTE_COUNT * PTE_SIZE; i++) {
 		pte[i] = (i << 12) | PAGE_PRESENT | PAGE_WRITE;
 	}
 
 	uint32_t pgd_kern_phy_addr = (uint32_t)pgd_kern - PAGE_OFFSET;
-
+	
 	// 注册页错误中断的处理函数 ( 14 是页故障的中断号 )
 	register_interrupt_handler(14, &page_fault);
 
